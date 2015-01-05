@@ -118,10 +118,6 @@ function setCtx(context) {
     }
   });
 
-  function handleText(jq) {
-    return jq.text();
-  }
-
   return this;
 }
 
