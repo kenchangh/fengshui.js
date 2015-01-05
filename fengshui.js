@@ -57,7 +57,7 @@ function setCtx(context) {
   for (var i = 0; i < this.fsComponents.length; i++) {
     var component = this.fsComponents[i];
     var selectorVar = processName(component,
-      this.fsSeparator,this.fsUseVars);
+      this.fsSeparator, this.fsUseVars);
     this[selectorVar] = $root.find(component);
   }
   return this;
