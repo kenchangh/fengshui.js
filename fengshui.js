@@ -36,6 +36,8 @@ function System(blueprint) {
     : options.separator;
   var aliases = blueprint.aliases === undefined
     ? {} : blueprint.aliases;
+  var types = blueprint.types === undefined
+    ? {} : blueprint.types;
 
   // having System inherit some props from blueprint
   // TODO: add aliases
@@ -46,6 +48,7 @@ function System(blueprint) {
   this.fsSeparator = separator;
   this.fsUseVars = useComponentVars;
   this.aliases = aliases;
+  this.types = types;
   var system = this;
 
   var $root = $(blueprint.root);
@@ -82,6 +85,9 @@ function setCtx(context) {
   var $context = $(context);
   var $root = $context.closest(this.fsRootStr);
   var aliases = this.aliases;
+  var types = this.types;
+  var system = this;
+
   for (var i = 0; i < this.fsComponents.length; i++) {
     var component = this.fsComponents[i];
     var componentVar = processName(component,
@@ -93,6 +99,29 @@ function setCtx(context) {
       this[aliases[component]] = this[componentVar];
     }
   }
+
+  $.each(types, function(type, componentVars) {
+    switch (type) {
+      case "text":
+        componentVars.map(function(componentVar) {
+          system[componentVar] = system[componentVar].text();
+        });
+        break;
+      case "number":
+        componentVars.map(function(componentVar) {
+          system[componentVar] = parseInt(
+            system[componentVar].text(), 10);
+        });
+        break;
+      default:
+        throw new TypeError('Only number and text type available');
+    }
+  });
+
+  function handleText(jq) {
+    return jq.text();
+  }
+
   return this;
 }
 
