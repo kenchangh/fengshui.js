@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fengshui.js - Contextual jQuery that doesn't suck</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/prism.css" rel="stylesheet">
+  <style>
+  @font-face {
+    font-family: "Zenzai Itacha";
+    src: url("fonts/Zenzai Itacha.ttf");
+  }
+  .title {
+    font-family: "Zenzai Itacha", sans-serif;
+  }
+  .navbar {
+    height: 6em;
+  }
+  .navbar-brand {
+    margin-top: 0.5em;
+    font-size: 3em;
+  }
+  .hero {
+    font-size: 6em;
+  }
+  .subhero {
+    color: #585858;
+  }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="title navbar-brand" href="/">Fengshui.js</a>
+      </div>
+    </div>
+  </nav>
+
+
+  <div class="col-md-4 col-md-offset-4">
+    <h1 class="title hero text-center">Fengshui.js</h1>
+    <h4 class="subhero text-center">Making contextual jQuery suck less</h4>
+    <br>
+    <pre>
+var todos = new fengshui.System({
+  root: 'todo',
+  types: {
+    'value': ['newTodo']
+  }
+});
+
+todos.todoInput.keypress(function(e) {
+  var todo = todos.setCtx(this); // setting todo context
+  if (e.which === 13) {
+    // exit early if empty
+    if (/\S+/.test(todo.newTodo)) return;
+    var newTodo = '&lt;div class=""&gt;'+todo.newTodo+'&lt;/div&gt;';
+    todo.todoList.append(todo.newTodo);
+  }
+});</pre>
+    <div class="todo panel panel-default">
+      <div class="panel-body">
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/prism.js"></script>
+  <script>
+
+  </script>
+</body>
+
+</html>
