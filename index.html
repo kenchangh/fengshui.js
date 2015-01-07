@@ -12,6 +12,10 @@
     font-family: "Zenzai Itacha";
     src: url("fonts/Zenzai Itacha.ttf");
   }
+  html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
   .title {
     font-family: "Zenzai Itacha", sans-serif;
   }
@@ -28,6 +32,16 @@
   .subhero {
     color: #585858;
   }
+  .input-group-addon {
+    cursor: pointer;
+  }
+  .remove-todo {
+    color: #848484;
+    cursor: pointer;
+  }
+  .remove-todo:hover {
+    color: #FE2E64;
+  }
   </style>
 </head>
 
@@ -40,42 +54,175 @@
     </div>
   </nav>
 
-
-  <div class="col-md-4 col-md-offset-4">
+  <div class="col-md-8 col-md-offset-2">
     <h1 class="title hero text-center">Fengshui.js</h1>
-    <h4 class="subhero text-center">Making contextual jQuery suck less</h4>
-    <br>
-    <pre>
-var todos = new fengshui.System({
-  root: 'todo',
-  types: {
-    'value': ['newTodo']
-  }
-});
+    <h4 class="subhero text-center"><em>Contextual jQuery that doesn't suck</em></h4>
+    <hr>
+  </div>
 
-todos.todoInput.keypress(function(e) {
-  var todo = todos.setCtx(this); // setting todo context
-  if (e.which === 13) {
-    // exit early if empty
-    if (/\S+/.test(todo.newTodo)) return;
-    var newTodo = '&lt;div class=""&gt;'+todo.newTodo+'&lt;/div&gt;';
-    todo.todoList.append(todo.newTodo);
-  }
-});</pre>
+  <div class="col-md-8 col-md-offset-2">
+    <h2 class="text-center">What's "contextual"?</h2>
+    <h3 class="subhero text-center">Let's start with a practical example.</h4>
+  </div>
+
+  <div class="col-md-6 col-md-offset-3">
+    <p>Often, for front end applications, we have multiple <code>&lt;div&gt;</code>s that do the same thing. Let's say, a Facebook post. When writing code for user interaction, you want the effects to take place <em>only</em> on that post. So you scope it up as a whole, individual system by itself. That's where writing jQuery becomes really sticky. When you have to write everything relative to the root of the scope and then use a bunch of <code>.find()</code>s.</p>
+
+    <p>Here is an example where each <strong>todo list</strong> is scoped and their elements don't speak to outsiders. All user interactions are isolated. Yeah, kinda anti-social.</p>
+    <br>
+  </div>
+
+  <div class="row">
+
+  <div class="col-md-4 col-md-offset-2">
     <div class="todo panel panel-default">
       <div class="panel-body">
-        
+        <div class="todo-list">
+          <div class="todo-item well well-sm">
+            Change the world
+            <span class="remove-todo pull-right glyphicon glyphicon-remove"></span>
+          </div>
+          <div class="todo-item well well-sm">
+            Use Fengshui.js
+            <span class="remove-todo pull-right glyphicon glyphicon-remove"></span>
+          </div>
+        </div>
+        <form class="todo-form" action="#">
+        <div class="input-group">
+          <input type="text" class="todo-input form-control" placeholder="Add new item...">
+          <span class="add-todo-btn input-group-addon">
+            <span class="glyphicon glyphicon-send"></span>
+          </span>
+        </div>
+        </form>
       </div>
     </div>
   </div>
+
+  <div class="col-md-4">
+    <div class="todo panel panel-default">
+      <div class="panel-body">
+        <div class="todo-list">
+          <div class="todo-item well well-sm">
+            Do my homework
+            <span class="remove-todo pull-right glyphicon glyphicon-remove"></span>
+          </div>
+          <div class="todo-item well well-sm">
+            Save my homework from dog
+            <span class="remove-todo pull-right glyphicon glyphicon-remove"></span>
+          </div>
+        </div>
+        <form class="todo-form" action="#">
+        <div class="input-group">
+          <input type="text" class="todo-input form-control" placeholder="Add new item...">
+          <span class="add-todo-btn input-group-addon">
+            <span class="glyphicon glyphicon-send"></span>
+          </span>
+        </div>
+        </form>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  </div> <!-- .row -->
+
+  <div class="col-md-8 col-md-offset-2">
+    <br>
+    <hr>
+    <h2 class="text-center">Fengshui encourages you to write readable JavaScript</h2>
+    <h3 class="subhero text-center">Compare and contrast the terseness</h4>
+  </div>
+
+  <div class="row">
+  <div class="col-md-4 col-md-offset-2">
+    <br>
+    <h4 class="text-center">jQuery with Fengshui.js</h4>
+<pre><code class="language-javascript">todos.addTodoBtn.click(function(e) {
+  var todo = todos.setCtx(this);
+  todo.todoForm.submit();
+});
+
+// use one for cloning
+var todoItem = todos.todoItem.slice(0, 1);
+
+todos.todoForm.submit(function(e) {
+  e.preventDefault(); // prevent form submit
+  var todo = todos.setCtx(this);
+
+  // only allow append if non-whitespace
+  if ($.trim(todo.newTodo).length === 0) return;
+  var removeBtn =
+    '&lt;span class="remove-todo pull-right '+
+    'glyphicon glyphicon-remove"&gt;&lt;/span&gt;';
+  todo.todoList.append(
+    // clone and replace text
+    todoItem
+      .clone()
+      .html(todo.newTodo + removeBtn)
+  );
+  todo.todoInput.val(''); // empty input for new one
+});
+
+// attached to future elements
+todos.fsRoot.on('click', '.remove-todo', function() {
+  var todo = todos.setCtx(this);
+  todo.todoItem.one.remove();
+});
+
+
+
+</code></pre>
+  </div>
+
+  <div class="col-md-4">
+    <br>
+    <h4 class="text-center">Vanilla jQuery</h4>
+<pre><code class="language-javascript">$('.add-todo-btn').click(function(e) {
+  var todo = todos.setCtx(this);
+  $('.todo-form').submit();
+});
+
+// use one for cloning
+var todoItem = $('.todo-item').slice(0, 1);
+
+$('.todo-form').submit(function(e) {
+  e.preventDefault(); // prevent form submit
+  var $todo = $(this).closest('.todo');
+  var $todoInput = $('.todo-input', $todo);
+  var todoInputVal = $todoInput.val();
+
+  // only allow append if non-whitespace
+  if ($.trim(todoInputVal).length === 0) {
+    return;
+  }
+  var removeBtn =
+    '&lt;span class="remove-todo pull-right '+
+    'glyphicon glyphicon-remove"&gt;&lt;/span&gt;';
+  $('.todo-list', $todo).append(
+    // clone and replace text
+    todoItem
+      .clone()
+      .html(todoInputVal + removeBtn)
+  );
+  $todoInput.val(''); // empty input for new one
+});
+
+// attached to future elements
+$('.todo').on('click', '.remove-todo', function() {
+  $(this).closest('.todo').remove();
+});</code></pre>
+  </div>
+
+  </div> <!-- .row -->
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="js/jquery.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/prism.js"></script>
-  <script>
+  <script src="js/fengshui.js"></script>
+  <script src="js/todo.js"></script>
 
-  </script>
 </body>
 
 </html>

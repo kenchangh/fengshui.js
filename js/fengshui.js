@@ -92,11 +92,15 @@ function setCtx(context) {
     var component = this.fsComponents[i];
     var componentVar = processName(component,
       this.fsSeparator, this.fsUseVars);
-    this[componentVar] = $root.find('.'+component);
+    this[componentVar] = $root.find('.'+component, $context);
+    this[componentVar].one = $context.closest('.'+component,
+      $root);
 
     // create an alias
     if (aliases[component] !== undefined) {
       this[aliases[component]] = this[componentVar];
+      this[componentVar].one = $context.closest('.'+component,
+        $root);
     }
   }
 
@@ -111,6 +115,11 @@ function setCtx(context) {
         componentVars.map(function(componentVar) {
           system[componentVar] = parseInt(
             system[componentVar].text(), 10);
+        });
+        break;
+      case "value":
+        componentVars.map(function(componentVar) {
+          system[componentVar] = system[componentVar].val();
         });
         break;
       default:
