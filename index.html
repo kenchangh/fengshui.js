@@ -130,10 +130,18 @@
   </div> <!-- .row -->
 
   <div class="col-md-8 col-md-offset-2">
-    <br>
     <hr>
-    <h2 class="text-center">Fengshui encourages you to write readable JavaScript</h2>
-    <h3 class="subhero text-center">Compare and contrast the terseness</h4>
+  </div>
+
+  <div class="col-md-6 col-md-offset-3">
+    <h2 class="text-center">Write readable JavaScript</h2>
+    <h3 class="subhero text-center">Both code creates the same todo list but compare the terseness Fengshui gives you.</h4>
+  </div>
+
+  <div class="col-md-6 col-md-offset-3">
+    <p>The biggest difference is that Fengshui automates selecting in jQuery for you. Everything is declared as a variable ready for you to access. Write JavaScript the way you would write your HTML.</p>
+
+    <p>Every time you need to set your context to a specific scope, just do <code>setCtx</code>.</p>
   </div>
 
   <div class="row">
@@ -145,7 +153,7 @@
   todo.todoForm.submit();
 });
 
-// use one for cloning
+// reserve one for cloning
 var todoItem = todos.todoItem.slice(0, 1);
 
 todos.todoForm.submit(function(e) {
@@ -185,7 +193,7 @@ todos.fsRoot.on('click', '.remove-todo', function() {
   $('.todo-form').submit();
 });
 
-// use one for cloning
+// reserve one for cloning
 var todoItem = $('.todo-item').slice(0, 1);
 
 $('.todo-form').submit(function(e) {
